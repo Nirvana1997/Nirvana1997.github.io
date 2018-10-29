@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="##1.前言
+写leetcode时发现很多时候高效的答案会用到unordered_map和unordered_set.从使用角度看,unordered的stl容器与正常的map,set相比,在插入和查询的效率上更高,《boost::unordered_map 和 std::map 的对比》中用5000万条数据放入两个容器中进行了对比.这是因为实现上,unordered的stl容器使用的是hashtable,而map,set使用的是红黑树.当然map,set插入后天然有序,需要按key排序时会比较方便.
+正好面试要求让我写hashtable的实现,今天就研究一下c++中unordered_map的实现,主要参照的是linux下的源码:/usr/include/c++/4.8.2/profile/unordered_map和hashtable(hashtable我在我的c++源码里没找到,可能在编译好的库中了,所以找的网上的代码).">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="Nirvana">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="c++中unordered_map的实现"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Nirvana1997&#39;s blog"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>c++中unordered_map的实现 - Nirvana1997&#39;s blog</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Menu -->
+<!--Menu Links and Overlay-->
+<div class="menu-bg">
+    <div class="menu-container">
+        <ul>
+            
+            <li class="menu-item">
+                <a href="/">
+                    Home
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/archives">
+                    Archives
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/about">
+                    About
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/tags">
+                    Tags
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/categories">
+                    Categories
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<!--Hamburger Icon-->
+<nav>
+    <a href="#menu"></a>
+</nav>
+
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="row">
+    <div class="col-sm-12">
+
+        <!--Title and Logo-->
+        <header>
+    <div class="logo">
+        <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
+        
+    </div>
+</header>
+
+        <section class="main">
+            
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2018/10/29/c-中unordered-map的实现/">
+                c++中unordered_map的实现
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2018-10-29</span>
+            
+            
+                <a href="#disqus_thread" class="comments">留言</a>
+            
+            
+                <span class="category">
+                    <a href="/categories/category/">category</a>
+                </span>
+            
+        </div>
+        <div class="post-info">
+            <span id="busuanzi_container_page_pv">
+                clicks:<span id="busuanzi_value_page_pv"></span>
+            </span>
+        </div>
+    </div>
+    
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <p>##1.前言</p>
+<p>写leetcode时发现很多时候高效的答案会用到unordered_map和unordered_set.从使用角度看,unordered的stl容器与正常的map,set相比,在插入和查询的效率上更高,<a href="https://blog.csdn.net/ljp1919/article/details/50463761?utm_source=blogkpcl7" target="_blank" rel="noopener">《boost::unordered_map 和 std::map 的对比》</a>中用5000万条数据放入两个容器中进行了对比.这是因为实现上,unordered的stl容器使用的是hashtable,而map,set使用的是红黑树.当然map,set插入后天然有序,需要按key排序时会比较方便.</p>
+<p>正好面试要求让我写hashtable的实现,今天就研究一下c++中unordered_map的实现,主要参照的是linux下的源码:/usr/include/c++/4.8.2/profile/unordered_map和hashtable(hashtable我在我的c++源码里没找到,可能在编译好的库中了,所以找的网上的代码).</p>
+<a id="more"></a>
+<p>##2.源代码</p>
+<p>###i.模板定义</p>
+<p>以下是map和unordered_map的模板定义:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> _Key, <span class="keyword">typename</span> _Tp, <span class="keyword">typename</span> _Compare = <span class="built_in">std</span>::less&lt;_Key&gt;,</span><br><span class="line">	 <span class="keyword">typename</span> _Allocator = <span class="built_in">std</span>::allocator&lt;<span class="built_in">std</span>::pair&lt;<span class="keyword">const</span> _Key, _Tp&gt; &gt; &gt;</span><br><span class="line">class <span class="built_in">map</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> _Key, <span class="keyword">typename</span> _Tp,</span><br><span class="line">	 <span class="keyword">typename</span> _Hash = <span class="built_in">std</span>::hash&lt;_Key&gt;,</span><br><span class="line">	 <span class="keyword">typename</span> _Pred = <span class="built_in">std</span>::equal_to&lt;_Key&gt;,</span><br><span class="line">	 <span class="keyword">typename</span> _Alloc = <span class="built_in">std</span>::allocator&lt;<span class="built_in">std</span>::pair&lt;<span class="keyword">const</span> _Key, _Tp&gt; &gt; &gt;</span><br><span class="line">class <span class="built_in">unordered_map</span></span><br></pre></td></tr></table></figure>
+<p>可以看到map需要key实现比较函数,默认使用std的less函数,所以可以通过重载operator&lt;()实现,unordered_map需要key实现hash函数和equal_to函数,hash可以注入std,equal_to可以重载operator==().从这个模板的定义也可以大概了解实现的数据结构.</p>
+<h3 id="ii-operator"><a href="#ii-operator" class="headerlink" title="ii.operator[]"></a>ii.operator[]</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> K, <span class="keyword">typename</span> Pair, <span class="keyword">typename</span> Hashtable&gt;</span><br><span class="line">    <span class="keyword">typename</span> map_base&lt;K, Pair, extract1st&lt;Pair&gt;, <span class="literal">true</span>, Hashtable&gt;::mapped_type&amp;</span><br><span class="line">    map_base&lt;K, Pair, extract1st&lt;Pair&gt;, <span class="literal">true</span>, Hashtable&gt;::</span><br><span class="line">    <span class="keyword">operator</span>[](<span class="keyword">const</span> K&amp; k)</span><br><span class="line">    &#123;</span><br><span class="line">      Hashtable* h = <span class="keyword">static_cast</span>&lt;Hashtable*&gt;(<span class="keyword">this</span>);</span><br><span class="line">      <span class="keyword">typename</span> Hashtable::<span class="keyword">hash_code_t</span> code = h-&gt;m_hash_code(k);</span><br><span class="line">      <span class="built_in">std</span>::<span class="keyword">size_t</span> n = h-&gt;bucket_index(k, code, h-&gt;bucket_count());</span><br><span class="line"> </span><br><span class="line">      <span class="keyword">typename</span> Hashtable::node* p = h-&gt;m_find_node(h-&gt;m_buckets[n], k, code);</span><br><span class="line">      <span class="keyword">if</span> (!p)</span><br><span class="line">	<span class="keyword">return</span> h-&gt;m_insert_bucket(<span class="built_in">std</span>::make_pair(k, mapped_type()),</span><br><span class="line">				  n, code)-&gt;second;</span><br><span class="line">      <span class="keyword">return</span> (p-&gt;m_v).second;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到主要还是依靠Hashtable实现的.</p>
+<p>步骤是:</p>
+<ol>
+<li><p>计算key的hash_code</p>
+</li>
+<li><p>找到对应的bucket</p>
+</li>
+<li>在bucket中寻找key值对应的node</li>
+<li>若存在对应node,则返回node对应值,若不存在,则插入一个新节点,返回新节点的值(对应类型默认值)</li>
+</ol>
+
+    </div>
+
+    
+
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/tag/">#tag</a>
+        </div>
+    
+
+    <!-- Comments -->
+    
+    <div class="comments">
+        
+<div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+
+
+    </div>
+    
+
+</div>
+        </section>
+
+    </div>
+</div>
+
+
+</div>
+
+<!-- Footer -->
+<div class="push"></div>
+
+<footer class="footer-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-about">
+                <h2>About</h2>
+                <p>
+                    This theme was developed by <a href="https://github.com/klugjo">Jonathan Klughertz</a>. The source code is available on Github. Create Websites. Make Magic.
+                </p>
+            </div>
+            
+    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 recent-posts">
+        <h2>Recent Posts</h2>
+        <ul>
+            
+            <li>
+                <a class="footer-post" href="/2018/10/29/c-中unordered-map的实现/">c++中unordered_map的实现</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2018/08/30/git原理(一)/">git原理</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2018/08/22/lua与c-的交互/">lua与c++的交互</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2018/08/19/游戏服务器的网络协议/">游戏服务器的网络协议</a>
+            </li>
+            
+        </ul>
+    </div>
+
+
+
+            
+<div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 footer-categories">
+    <h2>Categories</h2>
+    <ul>
+        
+        <li>
+            <a class="footer-post" href="/categories/category/">category</a>
+        </li>
+        
+        <li>
+            <a class="footer-post" href="/categories/git/">git</a>
+        </li>
+        
+        <li>
+            <a class="footer-post" href="/categories/多线程编程/">多线程编程</a>
+        </li>
+        
+        <li>
+            <a class="footer-post" href="/categories/网络/">网络</a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <ul class="list-inline footer-social-icons">
+                    
+                    <li class="list-inline-item">
+                        <a href="https://github.com/Nirvana1997">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-github"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="mailto:408985936@qq.com">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-envelope-o"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="\#">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-rss"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <!--统计start-->
+        <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+        </script>
+        <span id="busuanzi_container_site_pv">
+            clicks: <span id="busuanzi_value_site_pv"></span>
+        </span>
+        <span id="busuanzi_container_site_uv">
+            visitors: <span id="busuanzi_value_site_uv"></span>
+        </span>
+        <!--统计end-->
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="footer-copyright">
+                    @Nirvana1997. All right reserved | Design & Hexo <a href="http://www.codeblocq.com/">Jonathan Klughertz</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- After footer scripts -->
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Tween Max -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Custom JavaScript -->
+<script src="/js/main.js"></script>
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'Nirvana1997';
+
+    (function(){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/nito.model.json"},"display":{"position":"right","width":100,"height":200,"hOffset":-50},"mobile":{"show":true},"react":{"opacityDefault":0.9,"opacityOnHover":0.2}});</script></body>
+
+</html>

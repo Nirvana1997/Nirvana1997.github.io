@@ -140,6 +140,69 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2018/10/29/c-中unordered-map的实现/">
+                c++中unordered_map的实现
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2018-10-29</span>
+            
+            
+                <span class="category">
+                    <a href="/categories/category/">category</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>##1.前言</p>
+<p>写leetcode时发现很多时候高效的答案会用到unordered_map和unordered_set.从使用角度看,unordered的stl容器与正常的map,set相比,在插入和查询的效率上更高,<a href="https://blog.csdn.net/ljp1919/article/details/50463761?utm_source=blogkpcl7" target="_blank" rel="noopener">《boost::unordered_map 和 std::map 的对比》</a>中用5000万条数据放入两个容器中进行了对比.这是因为实现上,unordered的stl容器使用的是hashtable,而map,set使用的是红黑树.当然map,set插入后天然有序,需要按key排序时会比较方便.</p>
+<p>正好面试要求让我写hashtable的实现,今天就研究一下c++中unordered_map的实现,主要参照的是linux下的源码:/usr/include/c++/4.8.2/profile/unordered_map和hashtable(hashtable我在我的c++源码里没找到,可能在编译好的库中了,所以找的网上的代码).</p>
+        </div>
+        <a href="/2018/10/29/c-中unordered-map的实现/" class="read-more">Read More</a>
+    
+
+</div>
+
+            
+                <div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2018/08/30/git原理(一)/">
+                git原理
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2018-08-30</span>
+            
+            
+                <span class="category">
+                    <a href="/categories/git/">git</a>
+                </span>
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>##1.前言</p>
+<p>一直觉得git很神奇,他的分支切换很快,他的自动合并很智能,他在协作编码时有着不可替代的作用.所以这两天想研究下git的实现原理,参考的资料主要是<a href="https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain" target="_blank" rel="noopener">Git Internals</a>,《Pro Git》的Chapter 10,还有中文版的<a href="https://git-scm.com/book/zh/v1/Git-%E5%86%85%E9%83%A8%E5%8E%9F%E7%90%86-%E5%BA%95%E5%B1%82%E5%91%BD%E4%BB%A4-Plumbing-%E5%92%8C%E9%AB%98%E5%B1%82%E5%91%BD%E4%BB%A4-Porcelain" target="_blank" rel="noopener">Git内部原理</a>.</p>
+        </div>
+        <a href="/2018/08/30/git原理(一)/" class="read-more">Read More</a>
+    
+
+</div>
+
+            
+                <div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2018/08/22/lua与c-的交互/">
                 lua与c++的交互
             </a>
@@ -397,41 +460,24 @@
 </div>
 
             
-                <div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2018/06/17/protobuf记录(一)/">
-                protobuf学习记录(一)——介绍与安装
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2018-06-17</span>
-            
-            
-                <span class="category">
-                    <a href="/categories/protobuf/">protobuf</a>
-                </span>
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>由mentor介绍，开始接触protobuf，感觉还是蛮有用的一个工具，记录一下学习过程~</p>
-        </div>
-        <a href="/2018/06/17/protobuf记录(一)/" class="read-more">Read More</a>
-    
-
-</div>
-
-            
         </section>
     </div>
 </div>
 
 
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="wrap-pagination">
+                <a class="disabled" href="/">
+                    <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                </a>
+                <a class="" href="/page/2/">
+                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
 
 
 
@@ -456,19 +502,19 @@
         <ul>
             
             <li>
+                <a class="footer-post" href="/2018/10/29/c-中unordered-map的实现/">c++中unordered_map的实现</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2018/08/30/git原理(一)/">git原理</a>
+            </li>
+            
+            <li>
                 <a class="footer-post" href="/2018/08/22/lua与c-的交互/">lua与c++的交互</a>
             </li>
             
             <li>
                 <a class="footer-post" href="/2018/08/19/游戏服务器的网络协议/">游戏服务器的网络协议</a>
-            </li>
-            
-            <li>
-                <a class="footer-post" href="/2018/08/17/c++中的拷贝构造函数调用时机/">c++中的拷贝构造函数调用时机</a>
-            </li>
-            
-            <li>
-                <a class="footer-post" href="/2018/08/05/游戏后端c++开发的一些开发心得/">游戏后端c++开发的一些开发心得</a>
             </li>
             
         </ul>
@@ -482,19 +528,19 @@
     <ul>
         
         <li>
+            <a class="footer-post" href="/categories/category/">category</a>
+        </li>
+        
+        <li>
+            <a class="footer-post" href="/categories/git/">git</a>
+        </li>
+        
+        <li>
             <a class="footer-post" href="/categories/多线程编程/">多线程编程</a>
         </li>
         
         <li>
-            <a class="footer-post" href="/categories/vim/">vim</a>
-        </li>
-        
-        <li>
             <a class="footer-post" href="/categories/网络/">网络</a>
-        </li>
-        
-        <li>
-            <a class="footer-post" href="/categories/c/">c++</a>
         </li>
         
     </ul>
