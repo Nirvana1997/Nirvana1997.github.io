@@ -10,6 +10,8 @@
 
     <!--Description-->
     
+        <meta name="description" content="1.前言昨天弄懂了epoll是干啥的,今天来研究下它是怎么实现的以及怎么用的.">
+    
 
     <!--Author-->
     
@@ -18,7 +20,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="Nirvana1997&#39;s blog"/>
+        <meta property="og:title" content="epoll的实现机制"/>
     
 
     <!--Open Graph Description-->
@@ -29,7 +31,7 @@
 
     <!--Type page-->
     
-        <meta property="og:type" content="website" />
+        <meta property="og:type" content="article" />
     
 
     <!--Page Cover-->
@@ -40,7 +42,7 @@
 
     <!-- Title -->
     
-    <title>lua - Nirvana1997&#39;s blog</title>
+    <title>epoll的实现机制 - Nirvana1997&#39;s blog</title>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
@@ -121,9 +123,7 @@
 <div class="container">
 
     <!-- Main Content -->
-    
-
-<div class="row">
+    <div class="row">
     <div class="col-sm-12">
 
         <!--Title and Logo-->
@@ -131,25 +131,79 @@
     <div class="logo">
         <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
         
-            <h1 id="main-title" class="title">#lua</h1>
-        
     </div>
 </header>
 
-        <section class="main archive-container">
+        <section class="main">
             
-                <div class="archive-post">
-    <a href="/2018/08/22/lua与c-的交互/">
-        <span class="archive-date">
-            Aug 2018
-        </span>
-        lua与c++的交互
-    </a>
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2018/11/01/epoll的实现机制/">
+                epoll的实现机制
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2018-11-01</span>
+            
+            
+                <a href="#disqus_thread" class="comments">留言</a>
+            
+            
+                <span class="category">
+                    <a href="/categories/Linux/">Linux</a>
+                </span>
+            
+        </div>
+        <div class="post-info">
+            <span id="busuanzi_container_page_pv">
+                clicks:<span id="busuanzi_value_page_pv"></span>
+            </span>
+        </div>
+    </div>
+    
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <h2 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h2><p>昨天弄懂了epoll是干啥的,今天来研究下它是怎么实现的以及怎么用的.</p>
+<a id="more"></a>
+<h2 id="2-select和poll"><a href="#2-select和poll" class="headerlink" title="2.select和poll"></a>2.select和poll</h2>
+    </div>
+
+    
+
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/Linux/">#Linux</a> <a href="/tags/epoll/">#epoll</a>
+        </div>
+    
+
+    <!-- Comments -->
+    
+    <div class="comments">
+        
+<div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
-            
+
+
+
+    </div>
+    
+
+</div>
         </section>
+
     </div>
 </div>
+
 
 </div>
 
@@ -299,7 +353,7 @@
         var dsq = document.createElement('script');
         dsq.type = 'text/javascript';
         dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     }());
 </script>
