@@ -10,6 +10,8 @@
 
     <!--Description-->
     
+        <meta name="description" content="1.前言面试被问到c++的泛型和java的泛型有什么区别,回答得不是很好,来总结一下.">
+    
 
     <!--Author-->
     
@@ -18,7 +20,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="Nirvana1997&#39;s blog"/>
+        <meta property="og:title" content="c++泛型(模板)和java泛型的实现"/>
     
 
     <!--Open Graph Description-->
@@ -29,7 +31,7 @@
 
     <!--Type page-->
     
-        <meta property="og:type" content="website" />
+        <meta property="og:type" content="article" />
     
 
     <!--Page Cover-->
@@ -40,7 +42,7 @@
 
     <!-- Title -->
     
-    <title>Linux - Nirvana1997&#39;s blog</title>
+    <title>c++泛型(模板)和java泛型的实现 - Nirvana1997&#39;s blog</title>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
@@ -121,9 +123,7 @@
 <div class="container">
 
     <!-- Main Content -->
-    
-
-<div class="row">
+    <div class="row">
     <div class="col-sm-12">
 
         <!--Title and Logo-->
@@ -131,43 +131,90 @@
     <div class="logo">
         <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
         
-            <h1 id="main-title" class="title">#Linux</h1>
-        
     </div>
 </header>
 
-        <section class="main archive-container">
+        <section class="main">
             
-                <div class="archive-post">
-    <a href="/2018/11/01/epoll的实现机制/">
-        <span class="archive-date">
-            Nov 2018
-        </span>
-        epoll的实现机制
-    </a>
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2018/11/14/c-泛型和java泛型的实现/">
+                c++泛型(模板)和java泛型的实现
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2018-11-14</span>
+            
+            
+                <a href="#disqus_thread" class="comments">留言</a>
+            
+            
+                <span class="category">
+                    <a href="/categories/c/">c++</a>
+                </span>
+            
+        </div>
+        <div class="post-info">
+            <span id="busuanzi_container_page_pv">
+                clicks:<span id="busuanzi_value_page_pv"></span>
+            </span>
+        </div>
+    </div>
+    
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <h2 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h2><p>面试被问到c++的泛型和java的泛型有什么区别,回答得不是很好,来总结一下.</p>
+<a id="more"></a>
+<h2 id="2-泛型实现"><a href="#2-泛型实现" class="headerlink" title="2.泛型实现"></a>2.泛型实现</h2><h3 id="i-c"><a href="#i-c" class="headerlink" title="(i).c++"></a>(i).c++</h3><p>c++的泛型实现机制很简单,就是在实际编译时,类似于宏一样,把实际的类型代入模板,并针对不同的类型生成不同的代码,所以编译后代码体积会变大,但执行时就不需要额外的判断了,运行时效率会较高.</p>
+<p>所以c++的泛型可以说是以空间换时间.</p>
+<h3 id="ii-java"><a href="#ii-java" class="headerlink" title="(ii).java"></a>(ii).java</h3><p>java的泛型则比较复杂,java在编译时,它会去执行类型检查和类型推断,然后生成普通的不带泛型的字节码,这种字节码可以被一般的 Java 虚拟机接收并执行,这种技术被称为擦除(erasure).</p>
+<p>java编译后不同类型的模板类编译出的是同一份代码.然后在使用时编译器会帮助进行类型转换.</p>
+<p>例如:</p>
+<p>原代码为:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Pair&lt;String&gt; pair = <span class="keyword">new</span> Pair&lt;&gt;(<span class="string">""</span>, <span class="string">""</span>);</span><br><span class="line">   pair.setFirst(<span class="string">"QMI"</span>);</span><br><span class="line">   pair.setSecond(<span class="string">"Kang"</span>);</span><br><span class="line">   String first = pair.getFirst();</span><br><span class="line">   String second = pair.getSecond();</span><br></pre></td></tr></table></figure>
+<p>反编译后为:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Pair pair = <span class="keyword">new</span> Pair(<span class="string">""</span>, <span class="string">""</span>);</span><br><span class="line">   pair.setFirst(<span class="string">"QMI"</span>);</span><br><span class="line">   pair.setSecond(<span class="string">"Kang"</span>);</span><br><span class="line">   String first = (String)pair.getFirst();</span><br><span class="line">   String second = (String)pair.getSecond();</span><br></pre></td></tr></table></figure>
+<p>所以java泛型的实现是在运行时去进行判断和类型转换的,这样会对运行时的效率有一定影响,但编译出来的泛型类的代码只需要一份.</p>
+<h2 id="3-总结"><a href="#3-总结" class="headerlink" title="3.总结"></a>3.总结</h2><p>c++是以泛型类为模板创建出各种不同的实例,而java只是在类上填入Object,运行时进行类型转换.所以c++的泛型是真泛型,java的泛型是伪泛型.</p>
+
+    </div>
+
+    
+
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/c/">#c++</a> <a href="/tags/java/">#java</a> <a href="/tags/泛型/">#泛型</a>
+        </div>
+    
+
+    <!-- Comments -->
+    
+    <div class="comments">
+        
+<div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
-            
-                <div class="archive-post">
-    <a href="/2018/10/31/转-epoll作用的解释/">
-        <span class="archive-date">
-            Oct 2018
-        </span>
-        [转]epoll作用的解释
-    </a>
+
+
+
+    </div>
+    
+
 </div>
-            
-                <div class="archive-post">
-    <a href="/2018/06/27/vim使用技巧学习-一/">
-        <span class="archive-date">
-            Jun 2018
-        </span>
-        vim使用技巧学习(一)
-    </a>
-</div>
-            
         </section>
+
     </div>
 </div>
+
 
 </div>
 
@@ -317,7 +364,7 @@
         var dsq = document.createElement('script');
         dsq.type = 'text/javascript';
         dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     }());
 </script>

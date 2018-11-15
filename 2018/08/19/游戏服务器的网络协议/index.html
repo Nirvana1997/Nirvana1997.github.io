@@ -173,8 +173,7 @@
         <!-- Post Content -->
         <h2 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h2><p>来到公司后了解到我们的游戏服务器是使用tcp协议进行通信的,使用epoll来监听和处理socket.网络协议会一定程度游戏数据的网络传输的效率、安全性、完整性、顺序性等,因此网络协议的选择一定要恰当.</p>
 <a id="more"></a>
-<h2 id="2-TCP与UDP"><a href="#2-TCP与UDP" class="headerlink" title="2.TCP与UDP"></a>2.TCP与UDP</h2><p>###(i).区别</p>
-<p>大概回忆下TCP与UDP的主要区别:</p>
+<h2 id="2-TCP与UDP"><a href="#2-TCP与UDP" class="headerlink" title="2.TCP与UDP"></a>2.TCP与UDP</h2><h3 id="i-区别"><a href="#i-区别" class="headerlink" title="(i).区别"></a>(i).区别</h3><p>大概回忆下TCP与UDP的主要区别:</p>
 <ol>
 <li>tcp面向连接,提供可靠服务;udp无连接,尽最大可能交付.tcp对于发送失败的包的会进行重传,所以tcp的服务相比udp<strong>可靠性</strong>更强.</li>
 <li>tcp实现较为复杂,虽然<strong>使用方便</strong>,但是在使用时想修改起来非常麻烦,无法做到自定义地制定一些规则.udp本身十分简单,没有握手、重传等的机制,只是简单地将数据报发送至网路上,但这样也使得udp的<strong>可修改性</strong>很强,基于udp可以实现项目需要的可靠性、流量控制等功能.感觉tcp和udp的这点区别类似于java和c++,使用java时不需要关心内存管理,但你也无法像c++那样去控制它的内存管理.</li>
@@ -262,19 +261,19 @@
         <ul>
             
             <li>
+                <a class="footer-post" href="/2018/11/14/IoC与工厂模式/">IoC与工厂模式</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2018/11/14/c-泛型和java泛型的实现/">c++泛型(模板)和java泛型的实现</a>
+            </li>
+            
+            <li>
                 <a class="footer-post" href="/2018/11/01/epoll的实现机制/">epoll的实现机制</a>
             </li>
             
             <li>
                 <a class="footer-post" href="/2018/10/31/转-epoll作用的解释/">[转]epoll作用的解释</a>
-            </li>
-            
-            <li>
-                <a class="footer-post" href="/2018/10/29/c-中unordered-map的实现/">c++中unordered_map的实现</a>
-            </li>
-            
-            <li>
-                <a class="footer-post" href="/2018/08/30/git原理(一)/">git原理</a>
             </li>
             
         </ul>
@@ -288,6 +287,10 @@
     <ul>
         
         <li>
+            <a class="footer-post" href="/categories/category/">category</a>
+        </li>
+        
+        <li>
             <a class="footer-post" href="/categories/git/">git</a>
         </li>
         
@@ -297,10 +300,6 @@
         
         <li>
             <a class="footer-post" href="/categories/网络/">网络</a>
-        </li>
-        
-        <li>
-            <a class="footer-post" href="/categories/vim/">vim</a>
         </li>
         
     </ul>
@@ -348,7 +347,7 @@
             </div>
         </div>
         <!--统计start-->
-        <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
         </script>
         <span id="busuanzi_container_site_pv">
             clicks: <span id="busuanzi_value_site_pv"></span>
